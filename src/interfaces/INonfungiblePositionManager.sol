@@ -84,10 +84,7 @@ interface INonfungiblePositionManager {
         returns (uint256 amount0, uint256 amount1);
 
     /// @notice Collects tokens owed to a position
-    function collect(CollectParams calldata params)
-        external
-        payable
-        returns (uint256 amount0, uint256 amount1);
+    function collect(CollectParams calldata params) external payable returns (uint256 amount0, uint256 amount1);
 
     /// @notice Returns the position information associated with a given token ID
     function positions(uint256 tokenId)

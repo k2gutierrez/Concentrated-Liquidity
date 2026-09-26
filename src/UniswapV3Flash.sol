@@ -3,8 +3,7 @@ pragma solidity 0.8.26;
 
 import {IERC20} from "forge-std/interfaces/IERC20.sol";
 import {IUniswapV3Pool} from "@uniswap/v3-core/contracts/interfaces/IUniswapV3Pool.sol";
-import {IUniswapV3FlashCallback} from
-    "@uniswap/v3-core/contracts/interfaces/callback/IUniswapV3FlashCallback.sol";
+import {IUniswapV3FlashCallback} from "@uniswap/v3-core/contracts/interfaces/callback/IUniswapV3FlashCallback.sol";
 import {IUniswapV3Factory} from "@uniswap/v3-core/contracts/interfaces/IUniswapV3Factory.sol";
 
 /// @title UniswapV3Flash — Flash Loan Example

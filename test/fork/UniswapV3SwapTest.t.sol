@@ -76,8 +76,7 @@ contract UniswapV3Test is Test {
 
         uint256 usdcBefore = IERC20(USDC).balanceOf(ALICE);
 
-        uint256 amountOut =
-            swapContract.swapExactInputSingle(WETH, USDC, FEE_MEDIUM, amountIn, 0);
+        uint256 amountOut = swapContract.swapExactInputSingle(WETH, USDC, FEE_MEDIUM, amountIn, 0);
 
         uint256 usdcAfter = IERC20(USDC).balanceOf(ALICE);
         vm.stopPrank();
@@ -97,8 +96,7 @@ contract UniswapV3Test is Test {
 
         uint256 wethBefore = IERC20(WETH).balanceOf(ALICE);
 
-        uint256 amountIn =
-            swapContract.swapExactOutputSingle(WETH, USDC, FEE_MEDIUM, amountOut, amountInMax);
+        uint256 amountIn = swapContract.swapExactOutputSingle(WETH, USDC, FEE_MEDIUM, amountOut, amountInMax);
 
         uint256 wethAfter = IERC20(WETH).balanceOf(ALICE);
         vm.stopPrank();
@@ -116,9 +114,7 @@ contract UniswapV3Test is Test {
         uint256 amountIn = 10_000e18; // 10,000 DAI
 
         // Build the path: DAI → (0.05% pool) → USDC → (0.3% pool) → WETH
-        bytes memory path = abi.encodePacked(
-            DAI, FEE_LOW, USDC, FEE_MEDIUM, WETH
-        );
+        bytes memory path = abi.encodePacked(DAI, FEE_LOW, USDC, FEE_MEDIUM, WETH);
 
         vm.startPrank(ALICE);
         IERC20(DAI).approve(address(swapContract), amountIn);
@@ -192,8 +188,7 @@ contract UniswapV3Test is Test {
         // Need to approve the liquidity contract to manage the NFT
         INonfungiblePositionManager(POSITION_MANAGER).approve(address(liquidityContract), tokenId);
 
-        (uint128 addedLiquidity,,) =
-            liquidityContract.increaseLiquidity(tokenId, USDC, WETH, addAmount0, addAmount1);
+        (uint128 addedLiquidity,,) = liquidityContract.increaseLiquidity(tokenId, USDC, WETH, addAmount0, addAmount1);
         vm.stopPrank();
 
         assertGt(addedLiquidity, 0, "Should have added liquidity");
@@ -211,8 +206,7 @@ contract UniswapV3Test is Test {
         INonfungiblePositionManager(POSITION_MANAGER).approve(address(liquidityContract), tokenId);
 
         // Step 1: Decrease liquidity (marks tokens as owed)
-        (uint256 amount0Owed, uint256 amount1Owed) =
-            liquidityContract.decreaseLiquidity(tokenId, halfLiquidity);
+        (uint256 amount0Owed, uint256 amount1Owed) = liquidityContract.decreaseLiquidity(tokenId, halfLiquidity);
         vm.stopPrank();
 
         assertGt(amount0Owed + amount1Owed, 0, "Should have tokens owed");

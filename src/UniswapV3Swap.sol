@@ -31,7 +31,7 @@ import {ISwapRouter} from "@uniswap/v3-periphery/contracts/interfaces/ISwapRoute
 ///
 contract UniswapV3Swap {
     error UniswapV3Swap__ZeroAmount();
-    
+
     ISwapRouter public immutable i_router;
 
     event SwapExecuted(address indexed tokenIn, address indexed tokenOut, uint256 amountIn, uint256 amountOut);
@@ -56,10 +56,10 @@ contract UniswapV3Swap {
     /// @param amountOutMinimum Minimum tokenOut to accept (slippage protection)
     /// @return amountOut The amount of tokenOut received
     function swapExactInputSingle(
-        address tokenIn, 
-        address tokenOut, 
-        uint24 fee, 
-        uint256 amountIn, 
+        address tokenIn,
+        address tokenOut,
+        uint24 fee,
+        uint256 amountIn,
         uint256 amountOutMinimum
     ) external returns (uint256 amountOut) {
         if (amountIn == 0) revert UniswapV3Swap__ZeroAmount();
@@ -73,16 +73,15 @@ contract UniswapV3Swap {
             tokenOut: tokenOut,
             fee: fee,
             recipient: msg.sender,
-            deadline: block.timestamp, // esto no debe ser block.timestamp, se debe pasar por parámetro y calcular en backend o frontend
-            amountIn: amountIn, 
+            deadline: block.timestamp, // TODO: must not be block.timestamp - pass it as a parameter and compute it off-chain
+            amountIn: amountIn,
             amountOutMinimum: amountOutMinimum,
-            sqrtPriceLimitX96: 0 // Esto es aceptar cualquier precio y se debe calcular en el back y en el front
+            sqrtPriceLimitX96: 0 // TODO: 0 accepts any price - compute this limit in the backend and frontend
         });
 
         amountOut = i_router.exactInputSingle(params);
 
         emit SwapExecuted(tokenIn, tokenOut, amountIn, amountOut);
-
     }
 
     // ═══════════════════════════════════════════════════════════════════════
@@ -101,10 +100,10 @@ contract UniswapV3Swap {
     /// @param amountInMaximum Maximum tokenIn willing to spend (slippage protection)
     /// @return amountIn The actual amount of tokenIn spent
     function swapExactOutputSingle(
-        address tokenIn, 
-        address tokenOut, 
-        uint24 fee, 
-        uint256 amountOut, 
+        address tokenIn,
+        address tokenOut,
+        uint24 fee,
+        uint256 amountOut,
         uint256 amountInMaximum
     ) external returns (uint256 amountIn) {
         if (amountOut == 0) revert UniswapV3Swap__ZeroAmount();
@@ -118,10 +117,10 @@ contract UniswapV3Swap {
             tokenOut: tokenOut,
             fee: fee,
             recipient: msg.sender,
-            deadline: block.timestamp, // esto no debe ser block.timestamp, se debe pasar por parámetro y calcular en backend o frontend
-            amountOut: amountOut, 
+            deadline: block.timestamp, // TODO: must not be block.timestamp - pass it as a parameter and compute it off-chain
+            amountOut: amountOut,
             amountInMaximum: amountInMaximum,
-            sqrtPriceLimitX96: 0 // Esto es aceptar cualquier precio y se debe calcular en el back y en el front
+            sqrtPriceLimitX96: 0 // TODO: 0 accepts any price - compute this limit in the backend and frontend
         });
 
         amountIn = i_router.exactOutputSingle(params);
@@ -132,7 +131,6 @@ contract UniswapV3Swap {
         }
 
         emit SwapExecuted(tokenIn, tokenOut, amountIn, amountOut);
-
     }
 
     // ═══════════════════════════════════════════════════════════════════════
@@ -154,7 +152,10 @@ contract UniswapV3Swap {
     /// @param amountIn The exact amount of the first token to swap
     /// @param amountOutMinimum Minimum of the last token to receive
     /// @return amountOut The amount of the final token received
-    function swapExactInputMultihop(bytes calldata path, uint256 amountIn, uint256 amountOutMinimum) external returns (uint256 amountOut) {
+    function swapExactInputMultihop(bytes calldata path, uint256 amountIn, uint256 amountOutMinimum)
+        external
+        returns (uint256 amountOut)
+    {
         if (amountIn == 0) revert UniswapV3Swap__ZeroAmount();
 
         address tokenIn;
@@ -168,13 +169,11 @@ contract UniswapV3Swap {
         ISwapRouter.ExactInputParams memory params = ISwapRouter.ExactInputParams({
             path: path,
             recipient: msg.sender,
-            deadline: block.timestamp, // esto no debe ser block.timestamp, se debe pasar por parámetro y calcular en backend o frontend
-            amountIn: amountIn, 
+            deadline: block.timestamp, // TODO: must not be block.timestamp - pass it as a parameter and compute it off-chain
+            amountIn: amountIn,
             amountOutMinimum: amountOutMinimum
         });
 
         amountOut = i_router.exactInput(params);
-
     }
-
 }

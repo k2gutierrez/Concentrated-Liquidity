@@ -172,17 +172,10 @@ contract UniswapV3Liquidity {
     /// @dev This does NOT transfer tokens — it only marks them as "owed".
     /// You must call collectFees() afterward to actually receive the tokens.
     /// This is a two-step process by design in Uniswap V3.
-    function decreaseLiquidity(uint256 tokenId, uint128 liquidity)
-        external
-        returns (uint256 amount0, uint256 amount1)
-    {
+    function decreaseLiquidity(uint256 tokenId, uint128 liquidity) external returns (uint256 amount0, uint256 amount1) {
         (amount0, amount1) = POSITION_MANAGER.decreaseLiquidity(
             INonfungiblePositionManager.DecreaseLiquidityParams({
-                tokenId: tokenId,
-                liquidity: liquidity,
-                amount0Min: 0,
-                amount1Min: 0,
-                deadline: block.timestamp
+                tokenId: tokenId, liquidity: liquidity, amount0Min: 0, amount1Min: 0, deadline: block.timestamp
             })
         );
 
@@ -202,14 +195,10 @@ contract UniswapV3Liquidity {
     function collectFees(uint256 tokenId) external returns (uint256 amount0, uint256 amount1) {
         (amount0, amount1) = POSITION_MANAGER.collect(
             INonfungiblePositionManager.CollectParams({
-                tokenId: tokenId,
-                recipient: msg.sender,
-                amount0Max: type(uint128).max,
-                amount1Max: type(uint128).max
+                tokenId: tokenId, recipient: msg.sender, amount0Max: type(uint128).max, amount1Max: type(uint128).max
             })
         );
 
         emit FeesCollected(tokenId, amount0, amount1);
     }
-
 }
